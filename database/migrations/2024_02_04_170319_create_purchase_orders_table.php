@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
-            $table->bigIncrements('project_id');
-            $table->bigIncrements('invoice_id');
+            $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('invoice_id');
             
             $table->foreign('project_id')
                 ->references('id')

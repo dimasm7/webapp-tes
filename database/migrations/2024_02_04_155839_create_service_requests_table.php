@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('service_requests', function (Blueprint $table) {
             $table->id();
-            $table->bigIncrements('project_id');
+            $table->unsignedBigInteger('project_id');
             $table->integer('qty')->default(1);
             $table->datetime('deadline')->nullable();
 

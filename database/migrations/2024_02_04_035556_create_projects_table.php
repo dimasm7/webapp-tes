@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->bigIncrements('client_id');
-            $table->bigIncrements('job_type_id');
+            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('job_type_id');
             $table->string('name');
             $table->text('desc')->nullable();
             $table->string('status')->nullable();

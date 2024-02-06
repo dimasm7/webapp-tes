@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->bigIncrements('job_type_id');
+            $table->unsignedBigInteger('job_type_id');
             $table->string('name');
             $table->string('desc')->nullable();
             $table->enum('status', ['active', 'nonactive'])->default('active');

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->bigIncrements('invoice_id');
+            $table->unsignedBigInteger('invoice_id');
             $table->string('amount');
             $table->dateTime('due_date')->nullable();
             $table->string('status')->nullable();
