@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 use App\Repositories\ClientRepository;
-use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
@@ -11,56 +12,40 @@ class ClientController extends Controller
     public function __construct(ClientRepository $clientRepo){
         $this->clientRepository = $clientRepo;
     }
-    public function store(Request $request){
-        try {
-            $this->clientRepository->store($request->all());
-            return response()->json(['status' => true, 'message' =>  "Successfully created client."]);
-        } catch (\Throwable $th) {
-            return response()->json(['status' => false,' errors'=> $th->getMessage(), 'message' => 'Something\'s wrong'],400);
-        }
+    public function index(){
+        $clients =  $this->clientRepository->getAll();
+        return view('clients.index', compact('clients'));
     }
-    public function update(Request $request, $id){
-        try {
-            $client = $this->clientRepository->find($id);
-
-            if (empty($client)) {
-                return response()->json([
-                    'status'=>false,
-                    'message'=>"Client not found.",
-                ],404);
-            }
-
-            $this->clientRepository->update($request->all(),$id);
-            $client = $this->clientRepository->find($id);
-
-            return response()->json([
-                'status'=>true,
-                'data'=> $client,
-                'message'=>"Successfully updated client.",
-            ]);
-
-        } catch (\Throwable $th) {
-            return response()->json(['status' => false,' errors'=> $th->getMessage(), 'message' => 'Something\'s wrong'],400);
-        }
+    public function create(){
+        return view('clients.create');
     }
-    public function delete($id){
-        try {
-            $client = $this->clientRepository->find($id);
+    public function store(CreateClientRequest $request){
+        $this->clientRepository->store($request->all());
+        return redirect(route('clients.index'))->with('status', 'Successfully created client.');
+    }
+    public function show($id){
+        $client = $this->clientRepository->find($id);
+        return view('clients.show', compact('client'));
+    }
+    public function edit($id){
+        $client = $this->clientRepository->find($id);
+        return view('clients.edit', compact('client'));
+    }
+    public function update(UpdateClientRequest $request, $id){
+        $client = $this->clientRepository->find($id);
 
-            if (empty($client)) {
-                return response()->json([
-                    'status'=>false,
-                    'message'=>"Client not found.",
-                ],404);
-            }
+        if (empty($client)) return redirect(route('clients.index'))->with('status', 'Client not found.');
 
-            $this->clientRepository->delete($id);
-            return response()->json([
-                'status'=> true,
-                'message'=> "Client has been deleted successfully",
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json(['status' => false,' errors'=> $th->getMessage(), 'message' => 'Something\'s wrong'],400);
-        }
+        $this->clientRepository->update($request->all(),$id);
+        $client = $this->clientRepository->find($id);
+
+        return redirect(route('clients.index'))->with('status', 'Successfully updated client.');
+    }
+    public function destroy($id){
+        $client = $this->clientRepository->find($id);
+        if (empty($client)) return redirect(route('clients.index'))->with('status', 'Client not found.');
+        
+        $this->clientRepository->delete($id);
+        return redirect(route('clients.index'))->with('status', 'Client has been deleted successfully');
     }
 }

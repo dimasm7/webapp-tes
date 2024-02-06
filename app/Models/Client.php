@@ -19,5 +19,6 @@ class Client extends Model
     public static $rules = [
         'name' => ['required'],
         'email' => ['required', 'unique:clients'],
+        'phone' => ['max:15']
     ];
 }
