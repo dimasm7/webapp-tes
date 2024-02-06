@@ -31,6 +31,8 @@ class ClientController extends Controller
             }
 
             $this->clientRepository->update($request->all(),$id);
+            $client = $this->clientRepository->find($id);
+
             return response()->json([
                 'status'=>true,
                 'data'=> $client,

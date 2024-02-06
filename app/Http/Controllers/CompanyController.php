@@ -31,6 +31,7 @@ class CompanyController extends Controller
             }
 
             $this->companyRepository->update($request->all(),$id);
+            $company = $this->companyRepository->find($id);
             return response()->json([
                 'status'=>true,
                 'data'=> $company,

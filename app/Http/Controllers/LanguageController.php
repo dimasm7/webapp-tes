@@ -31,6 +31,7 @@ class LanguageController extends Controller
             }
 
             $this->languageRepository->update($request->all(),$id);
+            $language = $this->languageRepository->find($id);
             return response()->json([
                 'status'=>true,
                 'data'=> $language,

@@ -31,6 +31,7 @@ class ProjectController extends Controller
             }
 
             $this->projectRepository->update($request->all(),$id);
+            $project = $this->projectRepository->find($id);
             return response()->json([
                 'status'=>true,
                 'data'=> $project,

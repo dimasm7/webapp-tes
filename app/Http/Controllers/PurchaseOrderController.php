@@ -31,6 +31,7 @@ class PurchaseOrderController extends Controller
             }
 
             $this->purchaseOrderRepository->update($request->all(),$id);
+            $purchaseOrder = $this->purchaseOrderRepository->find($id);
             return response()->json([
                 'status'=>true,
                 'data'=> $purchaseOrder,

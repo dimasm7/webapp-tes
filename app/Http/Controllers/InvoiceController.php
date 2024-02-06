@@ -31,6 +31,7 @@ class InvoiceController extends Controller
             }
 
             $this->invoiceRepository->update($request->all(),$id);
+            $serviceRequest = $this->invoiceRepository->find($id);
             return response()->json([
                 'status'=>true,
                 'data'=> $serviceRequest,

@@ -31,6 +31,7 @@ class JobController extends Controller
             }
 
             $this->jobRepository->update($request->all(),$id);
+            $job = $this->jobRepository->find($id);
             return response()->json([
                 'status'=>true,
                 'data'=> $job,

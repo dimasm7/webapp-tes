@@ -31,6 +31,7 @@ class ServiceRequestController extends Controller
             }
 
             $this->serviceRequestRepository->update($request->all(),$id);
+            $serviceRequest = $this->serviceRequestRepository->find($id);
             return response()->json([
                 'status'=>true,
                 'data'=> $serviceRequest,
