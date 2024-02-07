@@ -37,7 +37,6 @@ class ClientController extends Controller
         if (empty($client)) return redirect(route('clients.index'))->with('status', 'Client not found.');
 
         $this->clientRepository->update($request->all(),$id);
-        $client = $this->clientRepository->find($id);
 
         return redirect(route('clients.index'))->with('status', 'Successfully updated client.');
     }

@@ -5,7 +5,7 @@
             {{ session('status') }}
         </div>
     @endif
-    <a class="btn btn-sm btn-primary btn-uppercase mb-4" href="{{route('clients.create')}}">
+    <a class="btn btn-sm btn-primary btn-uppercase mb-4" href="{{route('job-types.create')}}">
         Create
     </a>
     <div class="table-responsive">
@@ -13,25 +13,23 @@
             <thead>
                 <tr>
                     <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Address</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($clients as $client)
+                @foreach ($jobTypes as $jobType)
                     <tr>
-                        <td>{{ $client->name }}</td>
-                        <td>{{ $client->email }}</td>
-                        <td>{{ $client->phone }}</td>
-                        <td>{{ $client->address }}</td>
+                        <td>{{ $jobType->name }}</td>
+                        <td>{{ $jobType->desc }}</td>
+                        <td>{{ $jobType->status }}</td>
                         <td>
-                            @include('clients.action', $client)
+                            @include('job_types.action', $jobType)
                         </td>
                     </tr>
                 @endforeach
-                @if (count($clients) < 1)
+                @if (count($jobTypes) < 1)
                     <tr>
                         <td colspan='5' align='center'>No Data Found!</td>
                     </tr>

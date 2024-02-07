@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateJobTypeRequest;
+use App\Http\Requests\UpdateJobTypeRequest;
 use App\Repositories\JobTypeRepository;
-use Illuminate\Http\Request;
 
 class JobTypeController extends Controller
 {
@@ -11,55 +12,39 @@ class JobTypeController extends Controller
     public function __construct(JobTypeRepository $jobTypeRepo){
         $this->jobTypeRepository = $jobTypeRepo;
     }
-    public function store(Request $request){
-        try {
-            $this->jobTypeRepository->store($request->all());
-            return response()->json(['status' => true, 'message' =>  "Successfully created job type."]);
-        } catch (\Throwable $th) {
-            return response()->json(['status' => false,' errors'=> $th->getMessage(), 'message' => 'Something\'s wrong'],400);
-        }
+    public function index(){
+        $jobTypes =  $this->jobTypeRepository->getAll();
+        return view('job_types.index', compact('jobTypes'));
     }
-    public function update(Request $request, $id){
-        try {
-            $jobType = $this->jobTypeRepository->find($id);
-
-            if (empty($jobType)) {
-                return response()->json([
-                    'status'=>false,
-                    'message'=>"Job type not found.",
-                ],404);
-            }
-
-            $this->jobTypeRepository->update($request->all(),$id);
-            $jobType = $this->jobTypeRepository->find($id);
-            return response()->json([
-                'status'=>true,
-                'data'=> $jobType,
-                'message'=>"Successfully updated job type.",
-            ]);
-
-        } catch (\Throwable $th) {
-            return response()->json(['status' => false,' errors'=> $th->getMessage(), 'message' => 'Something\'s wrong'],400);
-        }
+    public function create(){
+        return view('job_types.create');
     }
-    public function delete($id){
-        try {
-            $jobType = $this->jobTypeRepository->find($id);
+    public function store(CreateJobTypeRequest $request){
+        $this->jobTypeRepository->store($request->all());
+        return redirect(route('job-types.index'))->with('status', 'Successfully created job type.');
+    }
+    public function show($id){
+        $jobType = $this->jobTypeRepository->find($id);
+        return view('job_types.show', compact('jobType'));
+    }
+    public function edit($id){
+        $jobType = $this->jobTypeRepository->find($id);
+        return view('job_types.edit', compact('jobType'));
+    }
+    public function update(UpdateJobTypeRequest $request, $id){
+        $jobType = $this->jobTypeRepository->find($id);
 
-            if (empty($jobType)) {
-                return response()->json([
-                    'status'=>false,
-                    'message'=>"Job type not found.",
-                ],404);
-            }
+        if (empty($jobType)) return redirect(route('job-types.index'))->with('status', 'Job type not found.');
 
-            $this->jobTypeRepository->delete($id);
-            return response()->json([
-                'status'=> true,
-                'message'=> "Job type has been deleted successfully",
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json(['status' => false,' errors'=> $th->getMessage(), 'message' => 'Something\'s wrong'],400);
-        }
+        $this->jobTypeRepository->update($request->all(),$id);
+        return redirect(route('job-types.index'))->with('status', 'Successfully updated job type.');
+    }
+    public function destroy($id){
+        $jobType = $this->jobTypeRepository->find($id);
+
+        if (empty($jobType)) return redirect(route('job-types.index'))->with('status', 'Job type not found.');
+
+        $this->jobTypeRepository->delete($id);
+        return redirect(route('job-types.index'))->with('status', 'Job type has been deleted successfully');
     }
 }
