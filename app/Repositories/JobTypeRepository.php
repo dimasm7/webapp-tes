@@ -9,6 +9,9 @@ class JobTypeRepository
     public function find($id) {
         return $this->model()::find($id);
     }
+    public function pluck($name, $id) {
+        return $this->model()::pluck($name, $id);
+    }
     public function getAll() {
         return $this->model()::all();
     }

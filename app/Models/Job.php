@@ -12,12 +12,16 @@ class Job extends Model
     protected $fillable = [
         'job_type_id',
         'name',
-        'desc',
         'status',
+        'desc',
     ];
 
     public static $rules = [
         'job_type_id' => ['required'],
         'name' => ['required'],
     ];
+
+    public function job_types(){ 
+        return $this->belongsTo(JobType::class,'job_type_id'); 
+    }
 }
