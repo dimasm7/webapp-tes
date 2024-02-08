@@ -37,4 +37,7 @@
             </tbody>
         </table>
     </div>
+    <a class="btn btn-sm btn-secondary btn-uppercase mt-4" href="{{route('home')}}">
+        Back
+    </a>
 @endsection
